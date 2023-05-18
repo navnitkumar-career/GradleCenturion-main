@@ -1,0 +1,250 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'application'
+    id 'org.beryx.jlink' version '2.26.0'
+    id 'info.solidsoft.pitest' version '1.7.4'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.javamodularity.moduleplugin' version '1.8.12'
+    id 'com.github.breadmoirai.github-release' version '2.4.1'
+}
+
+group 'jasmine.jragon'
+version '0.23.0'
+
+java {
+    sourceCompatibility(17)
+    targetCompatibility(17)
+}
+
+application {
+    mainClassName = project.hasProperty('testingArea') ?
+            'bomb.TestingArea' :
+            'bomb.Main'
+
+    mainModule.set('centurion')
+}
+
+compileJava {
+    options.encoding("UTF-8")
+}
+
+compileTestJava {
+    options.encoding("UTF-8")
+}
+
+javadoc {
+    options.encoding("UTF-8")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.opencsv:opencsv:5.7.1'
+    implementation 'org.javatuples:javatuples:1.2'
+    implementation 'org.jgrapht:jgrapht-ext:1.5.1'
+    implementation 'org.jetbrains:annotations:24.0.0'
+    //implementation 'io.github.fvarrui:javpackager:1.5.1'
+
+    implementation('com.jfoenix:jfoenix:9.0.4') {
+        exclude group: "org.javafx"
+    }
+    implementation('io.github.palexdev:materialfx:11.12.0') {
+        exclude group: "org.javafx"
+    }
+
+    testImplementation 'org.testng:testng:7.7.1'
+    testImplementation 'org.slf4j:slf4j-api:2.0.6'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.6'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.13.2'
+}
+
+def firstInstance = project.hasProperty('thread0')
+def secondInstance = project.hasProperty('thread1')
+def thirdInstance = project.hasProperty('thread2')
+def fourthInstance = project.hasProperty('thread3')
+def fifthInstance = project.hasProperty('thread4')
+def sixthInstance = project.hasProperty('thread5')
+
+def includedTestDirectories = [
+        'bomb/tools/data/**', 'bomb/tools/*', 'bomb/tools/logic/*'
+]
+
+test {
+    useTestNG() {
+        if(firstInstance) {
+            suites 'src/test/resources/suites/suiteOne.xml'
+            includedTestDirectories.addAll([
+                    'bomb/modules/ab/**', 'bomb/modules/c/**'
+            ])
+        } else if (secondInstance) {
+            suites 'src/test/resources/suites/suiteTwo.xml'
+            includedTestDirectories.addAll([
+                    'bomb/modules/dh/**', 'bomb/modules/il/**', 'bomb/modules/m/**'
+            ])
+        } else if (thirdInstance) {
+            suites 'src/test/resources/suites/suiteThree.xml'
+            includedTestDirectories.addAll([
+                    'bomb/modules/np/**', 'bomb/modules/r/**'
+            ])
+        } else if (fourthInstance) {
+            suites 'src/test/resources/suites/suiteFour.xml'
+            includedTestDirectories.addAll([
+                    'bomb/modules/s/**', 'bomb/modules/t/**'
+            ])
+        } else if (fifthInstance) {
+            suites 'src/test/resources/suites/suiteFive.xml'
+            includedTestDirectories.addAll([
+                    'bomb', 'bomb/tools/filter/*', 'bomb/modules/wz/**'
+            ])
+        }
+    }
+    finalizedBy(jacocoTestReport)
+}
+
+jacocoTestReport {
+    reports.xml.enabled(true)
+
+    if (includedTestDirectories.size() != 3) {
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, include: includedTestDirectories, exclude: ['**/*Controller.*'])
+            }))
+        }
+    }
+}
+
+static List<String> getTargetClasses(boolean firstInstance, boolean secondInstance,
+                                     boolean thirdInstance, boolean fourthInstance,
+                                     boolean fifthInstance, boolean sixthInstance) {
+    if (firstInstance)
+        return ['bomb.modules.ab.**']
+    else if (secondInstance)
+        return ['bomb.modules.c.**']
+    else if (thirdInstance)
+        return ['bomb.modules.dh.**', 'bomb.modules.il.**']
+    else if (fourthInstance)
+        return ['bomb.modules.m.**', 'bomb.modules.np.**']
+    else if (fifthInstance)
+        return ['bomb.modules.r.**', 'bomb.modules.s.**']
+    else if (sixthInstance)
+        return ['bomb.modules.t.**', 'bomb.modules.wz.**', 'bomb.tools.filter.*']
+    return ['bomb.*']
+}
+
+pitest {
+    targetClasses = getTargetClasses(firstInstance, secondInstance, thirdInstance, fourthInstance,
+            fifthInstance, sixthInstance)
+    outputFormats = ['HTML']
+    testPlugin = 'testng'
+}
+
+javafx {
+    version = '17.0.2'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+jar.manifest.attributes(['Main-Class': "${mainClassName}"])
+
+jlink {
+    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    addExtraDependencies("javafx")
+
+    def opSys = org.gradle.internal.os.OperatingSystem.current()
+    String iconBaseFilename = "${buildDir}/resources/main/bomb/KTANE logo"
+
+    if (opSys.windows) {
+        launcher {
+            name = 'Gradle Centurion Win'
+        }
+
+        jpackage {
+            installerOptions += ['--win-per-user-install', '--win-dir-chooser', '--win-menu']
+            imageOptions += ['--icon', "${iconBaseFilename}.ico"]
+        }
+    } else if (opSys.linux) {
+        launcher {
+            name = 'Gradle Centurion Linux'
+        }
+
+        jpackage {
+            imageOptions += ['--icon', "${iconBaseFilename}.png"]
+            installerOptions += [
+                    '--linux-menu-group', 'Office',
+                    '--linux-shortcut'
+            ]
+        }
+    } else {
+        launcher {
+            name = 'Gradle Centurion Mac'
+        }
+
+        jpackage {
+            imageOptions += ['--icon', "${iconBaseFilename}.icns"]
+        }
+    }
+}
+
+tasks.register('zipExecutableFiles', Zip) {
+    dependsOn(jpackageImage)
+    from buildDir
+    def opSys = org.gradle.internal.os.OperatingSystem.current()
+    String baseFilename = "Gradle-Centurion-${project.version}-"
+
+    if (opSys.windows) {
+        include 'jpackage/Gradle Centurion Win/**'
+        archiveName "${baseFilename}win.zip"
+    } else if (opSys.linux) {
+        include 'jpackage/Gradle Centurion Linux/**'
+        archiveName "${baseFilename}linux.zip"
+    } else {
+        include 'jpackage/Gradle Centurion Mac/**'
+        archiveName "${baseFilename}mac.zip"
+    }
+}
+
+tasks.register('tarExecutableFiles', Tar) {
+    dependsOn(jpackageImage)
+    from buildDir
+    def opSys = org.gradle.internal.os.OperatingSystem.current()
+    String baseFilename = "Gradle-Centurion-${project.version}-"
+
+    if (opSys.windows) {
+        include 'jpackage/Gradle Centurion Win/**'
+        archiveName "${baseFilename}win.tar"
+    } else if (opSys.linux) {
+        include 'jpackage/Gradle Centurion Linux/**'
+        archiveName "${baseFilename}linux.tar"
+    } else {
+        include 'jpackage/Gradle Centurion Mac/**'
+        archiveName "${baseFilename}mac.tar"
+    }
+}
+
+githubRelease {
+    tagName = "${project.version}"
+    owner = 'Ultraviolet-Ninja'
+
+    def opSys = org.gradle.internal.os.OperatingSystem.current()
+    String baseFilename = "${buildDir}/distributions/Gradle-Centurion-${project.version}-"
+    allowUploadToExisting = !opSys.windows
+
+    if (opSys.windows) {
+        releaseAssets = files("${baseFilename}win.zip", "${baseFilename}win.tar")
+    } else if (opSys.linux) {
+        releaseAssets = files("${baseFilename}linux.zip", "${baseFilename}linux.tar")
+    } else {
+        releaseAssets = files("${baseFilename}mac.zip", "${baseFilename}mac.tar")
+    }
+}
+
+tasks.register('releaseToGitHub') {
+    dependsOn(tasks.named('zipExecutableFiles'), tasks.named('tarExecutableFiles'))
+    doFirst {
+        githubRelease.token = "${authToken}"
+    }
+    finalizedBy(tasks.named('githubRelease'))
+}

@@ -1,0 +1,913 @@
+WidgetController
+
+ @FXML
+    private void incrementPort() {
+        if (dviUp.isHover()) {
+            bomb.Widget.addPort(Ports.DVI);
+            updateField(dvi, bomb.Widget.getPort(Ports.DVI));
+        } else if (parallelUp.isHover()) {
+            bomb.Widget.addPort(Ports.PARALLEL);
+            updateField(parallel, bomb.Widget.getPort(Ports.PARALLEL));
+        } else if (psUp.isHover()) {
+            bomb.Widget.addPort(Ports.PS2);
+            updateField(ps, bomb.Widget.getPort(Ports.PS2));
+        } else if (rjUp.isHover()) {
+            bomb.Widget.addPort(Ports.RJ45);
+            updateField(rj, bomb.Widget.getPort(Ports.RJ45));
+        } else if (serialUp.isHover()) {
+            bomb.Widget.addPort(Ports.SERIAL);
+            updateField(serial, bomb.Widget.getPort(Ports.SERIAL));
+        } else if (rcaUp.isHover()) {
+            bomb.Widget.addPort(Ports.RCA);
+            updateField(rca, bomb.Widget.getPort(Ports.RCA));
+        }
+    }
+
+    @FXML
+    private void decrementPort() {
+        if (dviDown.isHover()) {
+            bomb.Widget.subPort(Ports.DVI);
+            updateField(dvi, bomb.Widget.getPort(Ports.DVI));
+        } else if (parallelDown.isHover()) {
+            bomb.Widget.subPort(Ports.PARALLEL);
+            updateField(parallel, bomb.Widget.getPort(Ports.PARALLEL));
+        } else if (psDown.isHover()) {
+            bomb.Widget.subPort(Ports.PS2);
+            updateField(ps, bomb.Widget.getPort(Ports.PS2));
+        } else if (rjDown.isHover()) {
+            bomb.Widget.subPort(Ports.RJ45);
+            updateField(rj, bomb.Widget.getPort(Ports.RJ45));
+        } else if (serialDown.isHover()) {
+            bomb.Widget.subPort(Ports.SERIAL);
+            updateField(serial, bomb.Widget.getPort(Ports.SERIAL));
+        } else if (rcaDown.isHover()) {
+            bomb.Widget.subPort(Ports.RCA);
+            updateField(rca, bomb.Widget.getPort(Ports.RCA));
+        }
+    }
+
+
+
+
+    @FXML
+    private void setLit() {
+        checkUnknown(buttonSetter(bobLit, carLit, clrLit, frkLit, frqLit, indLit, msaLit, nsaLit,
+                sigLit, sndLit, trnLit, true));
+    }
+
+    @FXML
+    private void setUnlit() {
+        checkUnknown(buttonSetter(bobUnlit, carUnlit, clrUnlit, frkUnlit, frqUnlit, indUnlit,
+                msaUnlit, nsaUnlit, sigUnlit, sndUnlit, trnUnlit, false));
+    }
+
+    private int buttonSetter(ToggleButton bob, ToggleButton car, ToggleButton clr, ToggleButton frk,
+                             ToggleButton frq, ToggleButton ind, ToggleButton msa, ToggleButton nsa,
+                             ToggleButton sig, ToggleButton snd, ToggleButton trn, boolean on) {
+        Label currentLabel = new Label();
+        Indicators currentInd = Indicators.BOB;
+        TriState currentState = on ? ON : OFF;
+        int updateCheck = -1;
+        if (bob.isHover()) {
+            updateCheck = 0;
+            currentLabel = this.bob;
+        } else if (car.isHover()) {
+            updateCheck = 1;
+            currentInd = Indicators.CAR;
+            currentLabel = this.car;
+        } else if (clr.isHover()) {
+            updateCheck = 2;
+            currentInd = Indicators.CLR;
+            currentLabel = this.clr;
+        } else if (frk.isHover()) {
+            updateCheck = 3;
+            currentInd = Indicators.FRK;
+            currentLabel = this.frk;
+        } else if (frq.isHover()) {
+            updateCheck = 4;
+            currentInd = Indicators.FRQ;
+            currentLabel = this.frq;
+        } else if (ind.isHover()) {
+            updateCheck = 5;
+            currentInd = Indicators.IND;
+            currentLabel = this.ind;
+        } else if (msa.isHover()) {
+            updateCheck = 6;
+            currentInd = Indicators.MSA;
+            currentLabel = this.msa;
+        } else if (nsa.isHover()) {
+            updateCheck = 7;
+            currentInd = Indicators.NSA;
+            currentLabel = this.nsa;
+        } else if (sig.isHover()) {
+            updateCheck = 8;
+            currentInd = Indicators.SIG;
+            currentLabel = this.sig;
+        } else if (snd.isHover()) {
+            updateCheck = 9;
+            currentInd = Indicators.SND;
+            currentLabel = this.snd;
+        } else if (trn.isHover()) {
+            updateCheck = 10;
+            currentInd = Indicators.TRN;
+            currentLabel = this.trn;
+        }
+        bomb.Widget.setIndicator(currentState, currentInd);
+        currentLabel.setStyle(currentState.getLabel());
+        return updateCheck;
+    }
+
+    private void checkUnknown(int check) {
+            switch (check) {
+                case 0: {
+                    if (unselectedGroup(bobLit, bobUnlit)) {
+                        bob.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.BOB);
+                    }
+                }
+                break;
+                case 1: {
+                    if (unselectedGroup(carLit, carUnlit)) {
+                        car.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.CAR);
+                    }
+                }
+                break;
+                case 2: {
+                    if (unselectedGroup(clrLit, clrUnlit)) {
+                        clr.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.CLR);
+                    }
+                }
+                break;
+                case 3: {
+                    if (unselectedGroup(frkLit, frkUnlit)) {
+                        frk.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.FRK);
+                    }
+                }
+                break;
+                case 4: {
+                    if (unselectedGroup(frqLit, frqUnlit)) {
+                        frq.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.FRQ);
+                    }
+                }
+                break;
+                case 5: {
+                    if (unselectedGroup(indLit, indUnlit)) {
+                        ind.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.IND);
+                    }
+                }
+                break;
+                case 6: {
+                    if (unselectedGroup(msaLit, msaUnlit)) {
+                        msa.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.MSA);
+                    }
+                }
+                break;
+                case 7: {
+                    if (unselectedGroup(nsaLit, nsaUnlit)) {
+                        nsa.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.NSA);
+                    }
+                }
+                break;
+                case 8: {
+                    if (unselectedGroup(sigLit, sigUnlit)) {
+                        sig.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.SIG);
+                    }
+                }
+                break;
+                case 9: {
+                    if (unselectedGroup(sndLit, sndUnlit)) {
+                        snd.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.SND);
+                    }
+                }
+                break;
+                case 10: {
+                    if (unselectedGroup(trnLit, trnUnlit)) {
+                        trn.setStyle(UNKNOWN.getLabel());
+                        bomb.Widget.setIndicator(UNKNOWN, Indicators.TRN);
+                    }
+                }
+                break;
+            }
+        }
+
+        private boolean unselectedGroup(ToggleButton lit, ToggleButton unlit) {
+                return !lit.isSelected() && !unlit.isSelected();
+            }
+
+
+HexComparator.firstHalfScan() all for loops bundled up
+
+//            for (int j = 0; j < innerLimit; j++) {
+//                int counter = 0;
+//                for (int x = 0; x < ping.length; x++) {
+//                    for (int y = 0; y < ping[x]; y++) {
+//                        if (x > ping.length / 2 + 1) counter++;
+//                        copyNodes.add(maze.retrieve(x, y + counter + j));
+//                    }
+//                }
+//
+//                found = fullRotCompare(grid, new Hex(copyNodes));
+//                if (found) i = maze.rawExport().cap();
+//                else innerLimit++;
+//            }
+
+Hex.rotate() 1st attempt at the code
+
+//        int reverseCounter = 0;
+//        for (int i = 0; i < hexagon.cap(); i++){ //Scans all columns of the hexagon
+//            if (reverseCounter <= (hexagon.cap() - (hexagon.cap() / 2))) {
+//                for (int j = 0; j < (hexagon.cap() - (hexagon.cap() / 2) + reverseCounter); j++) {
+//                    if (hexagon.access(j).cap() - (1 + reverseCounter) >=0) {
+//                        System.out.println(hexagon.access(j).cap());
+//                        linearOrder.add(hexagon.access(j)
+//                                .access(hexagon.access(j).cap() - (1 + reverseCounter)));
+//                    }
+//                }
+//            }
+//            System.out.println("New Access");
+//        }
+
+        /*
+         * 1. Get the rotated order in a linear order
+         * 2. Make a method that adds a stream of HexNodes to a new Hex (FinalList<FinalList<HexNode>>)
+         * 3. Set that as the new hexagon
+         */
+
+HexNode
+//        protected int x, y;
+
+
+Hex
+//    private byte nodalSideLength(int area){
+//        return (byte) switch (area){
+//            case 19 -> 3;
+//            case 37 -> 4;
+//            case 61 -> 5;
+//            case 91 -> 6;
+//            case 127 -> 7;
+//            case 169 -> 8;
+//            case 217 -> 9;
+//            case 271 -> 10;
+//            case 331 -> 11;
+//            case 397 -> 12;
+//            default -> 0;
+//        };
+//    }
+
+//    public static int nodalArea(int sideLength){
+//        return switch (sideLength){
+//            case 3 -> 19;
+//            case 4 -> 37;
+//            case 5 -> 61;
+//            case 6 -> 91;
+//            case 7 -> 127;
+//            case 8 -> 169;
+//            case 9 -> 217;
+//            case 10 -> 271;
+//            case 11 -> 331;
+//            case 12 -> 397;
+//            default -> 0;
+//        };
+//    }
+
+
+//HexComparator MK.1
+/**
+     * Checks for a length that doesn't exceed the side length of the Maze
+     * and finds the list representation of the hexagon if that requirement is met
+     *
+     * @param sideLength The side length of the HexGrid
+     * @param grid The defuser vision
+     * @param fullMaze The full maze
+     * @return The list representation of the HexGrid with the walls in place
+     * @throws IllegalArgumentException The grid side length exceeds that of the Maze
+     */
+    private static FinalList<FinalList<Hex.HexNode>> find(int sideLength, HexGrid grid, Maze fullMaze)
+            throws IllegalArgumentException {
+        if (sideLength < fullMaze.rawExport().cap())
+            return scan(grid, fullMaze, pingRequest(sideLength));
+
+        throw new IllegalArgumentException("Side Length requested exceeds the size of the Maze");
+    }
+
+    /**
+     * Creates an array of lengths corresponding to the columns of the HST
+     *
+     * @param sideLength The side length of the hexagon
+     * @return An array of column lengths
+     */
+    private static int[] pingRequest(int sideLength) {
+        int counter = 0;
+        int[] request = new int[2 * sideLength - 1];
+
+        for (int i = sideLength; i < 2 * sideLength; i++) {
+            request[counter++] = i;
+        }
+
+        for (int j = 2 * sideLength - 2; j >= sideLength; j--) {
+            request[counter++] = j;
+        }
+        return request;
+    }
+
+    /**
+     * Scans the entirety of the Maze, starting with the first half, moving onto the center line
+     * if it couldn't pinpoint a match, lastly, moving to the second half of the Maze if a match wasn't found yet
+     *
+     * @param grid The defuser's HexGrid
+     * @param maze The full maze
+     * @param ping The set of lengths corresponding to thh columns of the HST
+     * @return The list representation with data about the walls
+     */
+    private static FinalList<FinalList<Hex.HexNode>> scan(HexGrid grid, Maze maze, int[] ping) {
+        FinalList<FinalList<Hex.HexNode>> product = firstHalfScan(grid, maze, ping);
+
+
+        //For loop set is for center column
+//        if (scanNull(product)) {
+//            product = downCenter(grid, maze, ping);
+//        }
+
+
+        //For loop set is for 2nd half
+//        if (scanNull(product)) {
+//            product = secondHalfScan(grid, maze, ping);
+//        }
+
+        return product;
+    }
+
+    /**
+     * Deals with scanning the first half of the hexagon excluding the center line
+     *
+     * @param grid The defuser's vision
+     * @param maze The full Maze
+     * @param ping The array of column lengths
+     * @return The list representation if found in the first half of the Maze
+     */
+    private static FinalList<FinalList<Hex.HexNode>> firstHalfScan(HexGrid grid, Maze maze, int[] ping) {
+        ArrayList<Hex.HexNode> copyNodes = new ArrayList<>();
+        //TODO - The caveat to these methods is when it reaches the closer parts to center
+
+        //Loop traverses the 1st half of the maze, excluding the center
+        for (int i = 0; i < maze.rawExport().cap() / 2; i++) {
+            //The inner limit is number of complete scans done in a given column.
+            //Calculated by the length of the column being scanned by the center of the HexGrid
+            // minus the length of the HexGrid center column
+            int innerLimit = maze.rawExport().access(i + grid.hexport().sideLength()).cap()
+                    - grid.getCenter().cap();
+            copyNodes = downColSet(i, innerLimit, ping, grid, maze);
+            if (!copyNodes.isEmpty()) break;
+        }
+        return !copyNodes.isEmpty() ? new Hex(copyNodes).export() : null;
+    }
+
+    /**
+     * Goes down the column to find all possible hexagon sections and compares a copied hexagon instance
+     * to the HexGrid the defuser sees
+     *
+     * @param xIterate The set of columns that the h
+     * @param limit How many iterations is takes to get the HST
+     *              to get to the bottom of the set of columns
+     * @param pings The column lengths representing the HST
+     * @param grid THe defuser's vision
+     * @param maze The full maze
+     * @return An ArrayList of HexNodes containing the info about a specific section of the full maze
+     */
+    private static ArrayList<Hex.HexNode> downColSet(int xIterate, int limit, int[] pings, HexGrid grid, Maze maze){
+        ArrayList<Hex.HexNode> copyNodes = new ArrayList<>(),
+                temp;
+        //Loop iterates downward to scan for all possibilities in a set of columns
+        for(int j = 0; j < limit; j++){
+            temp = retrieveHexStream(xIterate, pings.length, pings, j, maze);
+            boolean found = fullRotCompare(grid, new Hex(temp));
+            if (found){
+                j = limit;
+                copyNodes = temp;
+            }
+        }
+
+        return copyNodes;
+    }
+
+    /**
+     * Iterates through one series of HexNodes that represents a copied hexagon
+     *
+     * @param xIterate
+     * @param xLimit The length of the array
+     * @param yLimits The pings that control the column lengths of the HST
+     * @param jBuffer How far down the HST is
+     * @param maze The full maze
+     * @return An ArrayList of HexNodes containing the info about a specific section of the full maze
+     */
+    private static ArrayList<Hex.HexNode> retrieveHexStream(int xIterate, int xLimit,
+                                                            int[] yLimits, int jBuffer, Maze maze){
+        ArrayList<Hex.HexNode> copyNodes = new ArrayList<>();
+        System.out.println(errorCounter++);
+        //Counter tracks if the scanner has made it past the center column to start moving down
+        int counter = 0;
+        //Loop traverses the needed columns for a single scan
+        for (int x = 0; x < xLimit; x++){
+            if (x >= xLimit/2 + 1) counter++;
+
+            //Loop traverses the needed indices in a given column
+            for (int y = 0; y < yLimits[x]; y++){
+                copyNodes.add(maze.retrieve(x+xIterate, counter+y+jBuffer));
+            }
+        }
+        return copyNodes;
+    }
+
+    /**
+     * Scans the center columns of the Maze
+     *
+     * @param grid The defuser vision
+     * @param maze The full Maze
+     * @param ping The array of column lengths
+     * @return The list representation if found from the center
+     */
+    private static FinalList<FinalList<Hex.HexNode>> downCenter(HexGrid grid, Maze maze, int[] ping){
+        ArrayList<Hex.HexNode> copyNodes = new ArrayList<>();
+        int centerCol = maze.hexport().sideLength() - 1,
+                variation = grid.size() - 1,
+                pingCounter = 0;
+
+        for (int x = centerCol - variation; x <= centerCol + variation; x++){
+            for (int y = 0; y < ping[pingCounter]; y++){
+                copyNodes.add(maze.retrieve(x, y));
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Deals with scanning the second half of the Maze
+     *
+     * @param grid The defuser vision
+     * @param maze The full Maze
+     * @param ping The array of column lengths
+     * @return The list representation if found from the second half
+     */
+    private static FinalList<FinalList<Hex.HexNode>> secondHalfScan(HexGrid grid, Maze maze, int[] ping){
+        return null;
+    }
+
+    /**
+     * Compares the HexGrid to the Hex containing nodes copied from the full Maze.
+     * It does this 6 times, once for each time rotated
+     *
+     * @param grid The original defuser grid
+     * @param copy The maze-copies set of HexNodes
+     * @return True for a match, false for no match
+     * @throws IllegalArgumentException If there's a size difference between the two hexagons
+     */
+    private static boolean fullRotCompare(HexGrid grid, Hex copy) throws IllegalArgumentException{
+        boolean result = false;
+        int counter = 0;
+        expelShapes(copy.streamIt());
+        while (counter < 6) {
+            result = compare(grid, copy);
+            if (!result){
+                counter++;
+                copy.rotate(); //The copy has to fit the grid
+            } else counter = 6;
+        }
+        return result;
+    }
+
+    /**
+     * Compares the HexGrid to the Hex containing nodes copied from the full Maze once.
+     *
+     * @param grid The original defuser grid
+     * @param copy The maze-copies set of HexNodes
+     * @return True for a match, false for no match
+     * @throws IllegalArgumentException If there's a size difference between the two hexagons
+     */
+    private static boolean compare(HexGrid grid, Hex copy) throws IllegalArgumentException{
+        ArrayList<Hex.HexNode> gridArray = grid.hexport().streamIt(),
+                copyArray = copy.streamIt();
+        if (gridArray.size() != copyArray.size()) throw new IllegalArgumentException("Size Difference");
+
+        for (int i = 0; i < gridArray.size(); i++){
+            if (gridArray.get(i).fill != copyArray.get(i).fill) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Scans if the hexagon came out null from the last set of scans
+     *
+     * @param product The hexagon to scan
+     * @return Whether the hexagon has contents or not
+     */
+    private static boolean scanNull(FinalList<FinalList<Hex.HexNode>> product){
+        return product == null;
+    }
+
+    /**
+     * Testing method that writes all the shapes to the console
+     *
+     * @param nodes The hexagon array to write out
+     */
+    private static void expelShapes(ArrayList<Hex.HexNode> nodes){
+        int counter = 0;
+        for (Hex.HexNode node : nodes){
+            System.out.println("    " + counter++ + ":" + node.fill);
+        }
+    }
+
+//    private static int pingPeak(int[] pings){
+//        int biggest = 0;
+//        for (int num : pings){
+//            if (biggest < num) biggest = num;
+//        }
+//        return biggest;
+//    }
+}
+
+        /*
+         * Check if the HexGrid exceeds the size of the full maze
+         * Loop that moves down the columns
+         *   Start cutting off towers
+         *   Shave off current tower so that every column starts at index 0 (not 1, 2, or 3)
+         *   Create the starting hexagon set
+         *   If no match, cut off the top indices and add the next set (Continue this til match or end of the line)
+         *
+         *
+         */
+
+
+----------BooleanVenn
+package bomb.modules.ab.boolean_venn;
+
+import bomb.Widget;
+
+import static bomb.tools.filter.StreamFilter.LOGIC_SYMBOL_REGEX;
+import static bomb.tools.filter.StreamFilter.ultimateFilter;
+
+/**
+ * This class deals with the Boolean Venn Diagram module.
+ * The concept is based on the basics of Discrete Mathematics and uses basic boolean operators
+ * to determine the state of each section of the triple venn diagram, green being true and red for false.
+ */
+public class OldBooleanVenn extends Widget {
+    private static final boolean[][] TEST_CASES = {
+            {false, false, false},
+            {false, false, true},
+            {false, true, false},
+            {true, false, false},
+            {false, true, true},
+            {true, false, true},
+            {true, true, false},
+            {true, true, true}};
+    private static final int A = 0, B = 1, C = 2;
+
+    /**
+     * Turns the String operation into a String code for the Venn Diagram to decode by choosing
+     * the correct method depending on which side of the operation has the priority, that being
+     * the operation between parenthesis
+     *
+     * @param operation The operation that the defuser sees on the bomb
+     * @return A String code that represents the state of each Venn Diagram section
+     *          The output order is not, c, b, a, bc, ac, ab, all
+     */
+    public static String resultCode(String operation) throws IllegalArgumentException{
+        if (operation.isEmpty()) throw new IllegalArgumentException("Cannot have empty String");
+        checkEquation(operation);
+        return (operation.charAt(0) != 'A') ?
+                abPriority(operation) :
+                bcPriority(operation);
+    }
+
+    private static void checkEquation(String equation){
+        String errorMessage = "Component missing from equation: ";
+        if (ultimateFilter(equation, "a", "b", "c").length() != 3)
+            throw new IllegalArgumentException(errorMessage + "ABC");
+        else if (ultimateFilter(equation, "(", ")").length() != 2)
+            throw new IllegalArgumentException(errorMessage + "()");
+        else if (ultimateFilter(equation, LOGIC_SYMBOL_REGEX).length() != 2)
+            throw new IllegalArgumentException(errorMessage + "Logic Symbol");
+        else if (!checkFormat(equation))
+            throw new IllegalArgumentException("Incorrect Format");
+    }
+
+    private static boolean checkFormat(String equation){
+        for (String firstLetter : LOGIC_SYMBOL_REGEX){
+            for (String secondLetter : LOGIC_SYMBOL_REGEX){
+                String priorityAB = "(A" + firstLetter + "B)" + secondLetter + "C";
+                String priorityBC = "A" + firstLetter + "(B" + secondLetter + "C)";
+                if (equation.equals(priorityAB) || equation.equals(priorityBC))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Performs the operation between A and B first, then adds the operation for C
+     *
+     * @param op The operation that the defuser sees on the bomb
+     * @return A String code that represents the state of each Venn Diagram section.
+     */
+    private static String abPriority(String op){
+        String[] parts = op.split("\\)");
+        StringBuilder builder = new StringBuilder();
+
+        int[] functions = new int[]{detect(parts[0]), detect(parts[1])};
+        boolean[] priorityCases = priorityOutputs(functions[0], A+B);
+
+        for (int i = 0; i < TEST_CASES.length; i++)
+            builder.append(outsideOutputs(functions[1], priorityCases[i], TEST_CASES[i][C]));
+        return builder.toString();
+    }
+
+    /**
+     * Performs the operation between B and C first, then adds A
+     *
+     * @param op The operation that the defuser sees on the bomb
+     * @return A String code that represents the state of each Venn Diagram section
+     */
+    private static String bcPriority(String op){
+        String[] parts = op.split("\\(");
+        StringBuilder builder = new StringBuilder();
+
+        int[] functions = new int[]{detect(parts[1]), detect(parts[0])};
+        boolean[] priorityCases = priorityOutputs(functions[0], B+C);
+
+        for (int i = 0; i < TEST_CASES.length; i++)
+            builder.append(outsideOutputs(functions[1], TEST_CASES[i][A], priorityCases[i]));
+        return builder.toString();
+    }
+
+    /**
+     * Outputs the number selector based on the symbol that resembles a bitwise operator
+     *
+     * @param part The string that contains the operation
+     * @return The number selector
+     */
+    private static int detect(String part){
+        part = ultimateFilter(part, "∧", "∨", "↓", "⊻", "←", "→", "↔", "|");
+
+        switch (part){
+            case "∧": return 0; // And
+            case "∨": return 1; // Or
+            case "↓": return 2; // Nor
+            case "⊻": return 3; // Xor
+            case "|": return 4; // Nand
+            case "↔": return 5; // Xnor
+            case "→": return 6; // Implies
+            default: return 7; // Implied By
+        }
+    }
+
+    /**
+     * Performs the operation on the two variables inside the original equation's ()
+     * and returns the outputs from those test cases
+     *
+     * @param func The number selector
+     * @param priorityNum The determining number to reflect whether the method call came from ab or bc
+     * @return A set of booleans that reflect all test cases possible for the operation inside the ()
+     */
+    private static boolean[] priorityOutputs(int func, int priorityNum) {
+        boolean[] out = new boolean[8];
+        if (priorityNum == 1){
+            for (int i = 0; i < TEST_CASES.length; i++)
+                out[i] = functionMap(func, TEST_CASES[i][A], TEST_CASES[i][B]);
+        } else {
+            for (int i = 0; i < TEST_CASES.length; i++)
+                out[i] = functionMap(func, TEST_CASES[i][B], TEST_CASES[i][C]);
+        }
+        return out;
+    }
+
+    /**
+     * Returns 0 or 1 based on the boolean operation that gets passed in
+     *
+     * @param func The number selector
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return 1 or 0 based on their respective booleans
+     */
+    private static String outsideOutputs(int func, boolean x, boolean y){
+        return functionMap(func, x, y)?"1":"0";
+    }
+
+    /**
+     * Selects the bitwise operation to be executed
+     *
+     * @param func The number selector
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return The result of the operation
+     */
+    private static boolean functionMap(int func, boolean x, boolean y){
+        switch (func){
+            case 0: return and(x,y);
+            case 1: return or(x,y);
+            case 2: return nor(x,y);
+            case 3: return xor(x,y);
+            case 4: return nand(x,y);
+            case 5: return xnor(x,y);
+            case 6: return implies(x,y);
+            default: return impliedBy(x,y);
+        }
+    }
+
+    /**
+     * Bitwise And
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the and operation
+     */
+    private static boolean and(boolean x, boolean y){
+        return x && y;
+    }
+
+    /**
+     * Bitwise Nand
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the nand operation
+     */
+    private static boolean nand(boolean x, boolean y){
+        return !and(x, y);
+    }
+
+    /**
+     * Bitwise Or
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the or operation
+     */
+    private static boolean or(boolean x, boolean y){
+        return x || y;
+    }
+
+    /**
+     * Bitwise Nor
+     *
+     * @param x - 1st bit
+     * @param y - 2nd bit
+     * @return - Result of the nor operation
+     */
+    private static boolean nor(boolean x, boolean y){
+        return !or(x,y);
+    }
+
+    /**
+     * Bitwise Xor
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the xor operation
+     */
+    private static boolean xor(boolean x, boolean y){
+        return (x && !y) || (!x && y);
+    }
+
+    /**
+     * Bitwise Xnor
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the xnor operation
+     */
+    private static boolean xnor(boolean x, boolean y){
+        return !xor(x,y);
+    }
+
+    /**
+     * Bitwise Implies follows this order...
+     * False -> False - True
+     * False -> True - True
+     * True -> False - False
+     * True -> True - True
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the implies operation
+     */
+    private static boolean implies(boolean x, boolean y){
+        return !(x && !y);
+    }
+
+    /**
+     * Bitwise Implied By follows this order...
+     * False <- False - True
+     * False <- True - False
+     * True <- False - True
+     * True <- True - True
+     *
+     * @param x 1st bit
+     * @param y 2nd bit
+     * @return Result of the implied by operation
+     */
+    private static boolean impliedBy(boolean x, boolean y){
+        return !(!x && y);
+    }
+}
+
+First Simon Screams Star iteration
+public class OldStar {
+    private final Screams[] colorOrder;
+
+    public OldStar(Screams[] order) throws IllegalArgumentException{
+        if (order.length == 6) {
+            this.colorOrder = order;
+            setPrev();
+            setNext();
+        } else throw new IllegalArgumentException("Size doesn't equal 6");
+    }
+
+    private void setPrev(){
+        Screams prev = null;
+        for (int i = 0; i <= colorOrder.length; i++) {
+            if (i != 0) colorOrder[i% colorOrder.length].setLeft(prev);
+            prev = colorOrder[i% colorOrder.length];
+        }
+    }
+
+    private void setNext(){
+        Screams next = null;
+        for (int i = colorOrder.length; i >= 0; i--){
+            if (i != colorOrder.length) colorOrder[i% colorOrder.length].setRight(next);
+            next = colorOrder[i% colorOrder.length];
+        }
+    }
+
+    public boolean threeAdjacency(Screams[] flashOrder){
+        for (int i = 0; i < flashOrder.length-2; i++)
+            if (threeAdjacency(flashOrder[i], flashOrder[i+1], flashOrder[i+2])) return true;
+        return false;
+    }
+
+    //Three that are adjacent in clockwise order
+    public boolean threeAdjacency(Screams first, Screams second, Screams third){
+        for (Screams color : colorOrder)
+            if (color == first && color.getRight() == second && color.getRight().getRight() == third)
+                return true;
+        return false;
+    }
+
+    //Color, Adjacent, then color again
+    public boolean oneTwoOne(Screams[] flashOrder){
+        int track = sameColor(flashOrder);
+        return track != -1 && twoAdjacency(flashOrder[track], flashOrder[track + 1]);
+    }
+
+    //Finding if the same color flashed twice with one color in between
+    private int sameColor(Screams[] flashOrder){
+        int tracker = -1;
+        for (int i = 0; i < flashOrder.length-2; i++)
+            if (flashOrder[i] == flashOrder[i+2]) tracker = i;
+        return tracker;
+    }
+
+    //If no or one primary colors are flashing
+    public boolean primaryRule(Screams[] flashOrder){
+        Screams[] unique = Arrays.stream(flashOrder).distinct().toArray(Screams[]::new);
+        int counter = 0;
+        for (Screams temp : unique){
+            if (temp == RED || temp == YELLOW || temp == BLUE)
+                counter++;
+        }
+        return counter < 2;
+    }
+
+    //Complementary Color Not Flashed Rule
+    public boolean complementRule(Screams[] flashOrder){
+        int counter  = 0;
+        for (int i = 0; i < colorOrder.length/2; i++){
+           for (Screams flashColor : flashOrder)
+               if (flashColor == colorOrder[i] || flashColor == colorOrder[i + 3]) counter++;
+        }
+        return counter == 0;
+    }
+
+    public boolean twoAdjacency(Screams[] flashOrder){
+        for (int i = 0; i < flashOrder.length-1; i++)
+            if (twoAdjacency(flashOrder[i], flashOrder[i+1])) return true;
+        return false;
+    }
+
+    //Two that are adjacent in clockwise order
+    public boolean twoAdjacency(Screams first, Screams second){
+        for (Screams color : colorOrder)
+            if (color == first && color.getRight() == second)
+                return true;
+        return false;
+    }
+}

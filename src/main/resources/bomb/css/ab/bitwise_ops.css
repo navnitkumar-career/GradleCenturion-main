@@ -1,0 +1,13 @@
+.mfx-button {
+    -fx-font-size: 40;
+}
+
+.mfx-text-field {
+    -fx-font-size: 40;
+    -fx-prompt-text-fill: #020800;
+    -fx-text-fill: #020800;
+    -fx-background-color: #90ae46;
+    -fx-border-color: #5d6851;
+    -fx-border-width: 5;
+    -mfx-line-stroke-width: 0;
+}

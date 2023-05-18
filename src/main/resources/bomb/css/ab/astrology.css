@@ -1,0 +1,65 @@
+.mfx-button {
+    -fx-font-size: 24;
+}
+
+.mfx-text-field {
+    -fx-alignment: center;
+    -fx-background-color: #00407c;
+    -fx-background-radius: 15;
+    -fx-border-color: black;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-font-size: 30;
+    -fx-prompt-text-fill: white;
+    -mfx-line-stroke-width: 0;
+}
+
+.mfx-toggle-button {
+    -mfx-untoggle-color: #354558;
+    -mfx-untoggle-line-color: #172b58;
+    -mfx-toggle-color: #dedee0;
+    -mfx-toggle-line-color: #2b4cff;
+}
+/*TODO experiment with color schemes*/
+
+#fire-toggle-button {
+
+}
+
+#earth-toggle-button {
+
+}
+
+#air-toggle-button {
+
+}
+
+#water-toggle-button {
+
+}
+
+#celestial-toggle-button {
+
+}
+
+#vbox {
+    -fx-alignment: center;
+}
+
+#divider-grid-pane {
+    -fx-border-color: black;
+    -fx-border-width: 0 1 0 0;
+}
+
+#left-side-hbox {
+    -fx-alignment: center-right;
+}
+
+#right-side-hbox {
+    -fx-alignment: center-left;
+}
+
+#bottom-hbox {
+    -fx-border-color: black;
+    -fx-border-width: 1 0 0 0;
+}

@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite One">
+    <test name="A-B Module Tests">
+        <classes>
+            <class name="bomb.modules.ab.alphabet.AlphabetTest"/>
+            <class name="bomb.modules.ab.astrology.AstrologyTest"/>
+            <class name="bomb.modules.ab.battleship.BattleshipExceptionTest"/>
+            <class name="bomb.modules.ab.battleship.BattleshipValidationTest"/>
+            <class name="bomb.modules.ab.battleship.OceanEqTest"/>
+            <class name="bomb.modules.ab.bitwise.BitwiseTest"/>
+            <class name="bomb.modules.ab.blind.alley.BlindAlleyTest"/>
+            <class name="bomb.modules.ab.bool.venn.diagram.BooleanVennTest"/>
+        </classes>
+    </test>
+
+    <test name="C Module Tests">
+        <classes>
+            <class name="bomb.modules.c.caesar.cipher.CaesarTest"/>
+            <class name="bomb.modules.c.cheap.checkout.CheapCheckoutTest"/>
+            <class name="bomb.modules.c.cheap.checkout.CheckoutItemTest"/>
+            <class name="bomb.modules.c.chess.ChessTest"/>
+            <class name="bomb.modules.c.chords.ChordQualitiesTest"/>
+            <class name="bomb.modules.c.colored.switches.ColoredSwitchesTest"/>
+            <class name="bomb.modules.c.colored.switches.ColoredSwitchNodeEqTest"/>
+        </classes>
+    </test>
+</suite>
