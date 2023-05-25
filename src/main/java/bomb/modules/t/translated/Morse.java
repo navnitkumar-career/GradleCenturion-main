@@ -7,6 +7,7 @@
 package bomb.modules.t.translated;
 
 import bomb.tools.data.structures.avl.AVLTree;
+import io.github.pixee.security.BoundedLineReader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +29,7 @@ public final class Morse extends TranslationCenter {
         BufferedReader input = Files.newBufferedReader(
                 new File(ABSOLUTE_PATH).toPath(), StandardCharsets.UTF_8);
         while (input.ready()) {
-            String[] next = input.readLine().split("\\|");
+            String[] next = BoundedLineReader.readLine(input, 1000000).split("\\|");
             CODE_TREE.addNode(next[1], next[0]);
         }
     }
